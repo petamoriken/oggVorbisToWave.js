@@ -42,5 +42,5 @@ this software includes the work that is distributed in the [Apache License 2.0](
 [libvorbis.js] - port of libvorbis to JavaScript using emscripten  
 by Bjorn Melinder bjorn@soundtrap.com
 
-[WAAPISim]: (https://github.com/g200kg/WAAPISim)
-[libvorbis.js]: (https://github.com/bjornm/libvorbis-js)
+[WAAPISim]:https://github.com/g200kg/WAAPISim
+[libvorbis.js]:https://github.com/bjornm/libvorbis-js
