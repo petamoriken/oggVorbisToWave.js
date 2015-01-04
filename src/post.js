@@ -20,8 +20,6 @@ window["oggVorbisToWave"] = function(oggBuffer) {
 	ovFile = Vorbis.sp_ov_start();
 	wavpc = Vorbis.sp_ov_to_wave(ovFile);
 
-	console.log(wavpc);
-
 	FS.unlink("data.ogg");
 
 	size = heapu32[wavpc / 4 + 1] + 8;
