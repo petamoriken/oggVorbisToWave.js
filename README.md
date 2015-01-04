@@ -3,7 +3,7 @@ OggVorbis.js
 
 Add `window.oggVorbisToWave`.
 
-Enable to play OggVorbis by Web Audio API's `decodeAudioData` in Safari and IE10~ (use [WAAPISim]).
+Enable to play OggVorbis in Frontend-JavaScript by Web Audio API's `decodeAudioData` in Safari and IE10~ (use [WAAPISim]).
 
 	var ctx = null;
 	if(typeof webkitAudioContext !== "undefined") {
@@ -19,13 +19,16 @@ Enable to play OggVorbis by Web Audio API's `decodeAudioData` in Safari and IE10
 		req.open("GET", "test.ogg", true);
 		req.responseType = "arraybuffer";
 		req.onload = function(){
-			ctx.decodeAudioData(req.response, doSomething, function() {
+		
+			var oggArrayBuffer = req.response;
+			ctx.decodeAudioData(oggArrayBuffer, doSomething, function() {
 
-				// add oggVorbisToWave in window
-				var waveArrayBuffer = oggVorbisToWave(req.response);
+				// ctx.decodeAudioData doesn't support OggVorbis
+				var waveArrayBuffer = oggVorbisToWave(oggArrayBuffer);
 				ctx.decodeAudioData(waveArrayBuffer, doSomething);
 				
 			});
+			
 		};
 		req.send(null);
 
@@ -33,6 +36,10 @@ Enable to play OggVorbis by Web Audio API's `decodeAudioData` in Safari and IE10
 			// do something
 		}
 	}
+
+##TODO
+
+* Support big-endian CPU
 
 ##License
 
