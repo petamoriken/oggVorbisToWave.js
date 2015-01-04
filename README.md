@@ -1,4 +1,4 @@
-OggVorbis.js
+OggVorbis To Wave
 ==================
 
 Add `window.oggVorbisToWave`.
@@ -37,9 +37,6 @@ Enable to play OggVorbis in Frontend-JavaScript by Web Audio API's `decodeAudioD
 		}
 	}
 
-##TODO
-
-* Support big-endian CPU
 
 ##License
 
