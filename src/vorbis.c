@@ -1,4 +1,4 @@
-#include <emscripten.h>
+//#include <emscripten.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,7 +43,7 @@ void sp_ov_end(OggVorbis_File *s) {
     free(s);
 }
 
-char *sp_ov_to_wave(OggVorbis_File *s) {
+unsigned char *sp_ov_to_wave(OggVorbis_File *s) {
     vorbis_info *vi;
     WAVHEADER wh;
     DWORD bytes;
@@ -52,7 +52,7 @@ char *sp_ov_to_wave(OggVorbis_File *s) {
     int current_section = 0;
     int count = 0;
 
-    char *ret;
+    unsigned char *ret;
     int pc = 0;
 
     ov_fopen("data.ogg", s);
@@ -76,7 +76,12 @@ char *sp_ov_to_wave(OggVorbis_File *s) {
     memcpy(wh.data , "data", 4);
     wh.pcmbytes = bytes;
 
-    //ret = (char *)malloc(bytes + 44);
+    ret = (unsigned char *)malloc(bytes + 44);
+
+    if(ret == NULL) {
+        return NULL;
+    }
+
     memcpy(ret, &wh, 44);
     pc += 44;
 

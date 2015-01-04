@@ -6,7 +6,7 @@ VORBIS_URL:="http://downloads.xiph.org/releases/vorbis/$(VORBIS).tar.gz"
 
 EMCC_OPTS:=-s EXPORTED_FUNCTIONS="['_sp_ov_start', '_sp_ov_end', '_sp_ov_to_wave']"
 EMCC_OPTS+=-s LINKABLE=1
-#EMCC_OPTS+=-O3 --memory-init-file 0 --closure 1
+EMCC_OPTS+=-O3 --memory-init-file 0 --closure 1
 EMCC_OPTS+=--pre-js src/pre.js --post-js src/post.js
 
 EMCC_LINKS:=-I libogg/install/include -Llibogg/install/lib -logg -I libvorbis/build/include -I libvorbis/include -Llibvorbis/build/lib -lvorbis
