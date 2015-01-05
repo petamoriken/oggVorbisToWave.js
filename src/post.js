@@ -1,5 +1,4 @@
 // libogg and libvorbis function wrappers
-
 var Vorbis = {
 
 	sp_ov_start:	Module["cwrap"]('sp_ov_start', 'number', []),
@@ -21,11 +20,7 @@ window["oggVorbisToWave"] = function(oggBuffer) {
 
 	FS.unlink("data.ogg");
 
-	if(isLittleEndian)
-		size = heapu32[wavpc / 4 + 1] + 8;
-	else 
-		size = (new DataView(buffer)).getUint32(wavpc + 4, true) + 8;
-
+	size = (isLittleEndian && wavpc % 4 === 0) ? heapu32[wavpc / 4 + 1] + 8 : (new DataView(buffer)).getUint32(wavpc + 4, true) + 8;
 	ret = buffer.slice(wavpc, wavpc + size);
 
 	Vorbis.sp_ov_end(ovFile);
