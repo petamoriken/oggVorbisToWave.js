@@ -8,7 +8,7 @@ var Vorbis = {
 
 };
 
-var heap8 = Module["HEAP8"], heapu32 = Module["HEAPU32"], isLittleEndian = !!(new Uint8Array((new Uint16Array([0x00ff])).buffer))[0];
+var buffer = Module["buffer"], heapu32 = Module["HEAPU32"], isLittleEndian = !!(new Uint8Array((new Uint16Array([0x00ff])).buffer))[0];
 
 window["oggVorbisToWave"] = function(oggBuffer) {
 
@@ -24,16 +24,13 @@ window["oggVorbisToWave"] = function(oggBuffer) {
 	if(isLittleEndian)
 		size = heapu32[wavpc / 4 + 1] + 8;
 	else 
-		size = (new DataView(Module["buffer"])).getUint32(wavpc + 4, true) + 8;
+		size = (new DataView(buffer)).getUint32(wavpc + 4, true) + 8;
 
-	ret = new Uint8Array(size);
-	for(var i=0; i<size; ++i) {
-		ret[i] = heap8[wavpc + i];
-	}
+	ret = buffer.slice(wavpc, wavpc + size);
 
 	Vorbis.sp_ov_end(ovFile);
 
-	return ret.buffer;
+	return ret;
 };
 
 })(this);
