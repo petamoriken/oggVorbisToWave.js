@@ -31,10 +31,10 @@ Enable to play OggVorbis in Frontend-JavaScript by Web Audio API's `decodeAudioD
 			
 		};
 		req.send(null);
-
-		function doSomething(AudioBuffer) {
-			// do something
-		}
+	}
+	
+	function doSomething(AudioBuffer) {
+		// do something
 	}
 
 

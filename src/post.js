@@ -9,6 +9,9 @@ var Vorbis = {
 
 var buffer = Module["buffer"], heapu32 = Module["HEAPU32"], isLittleEndian = !!(new Uint8Array((new Uint16Array([0x00ff])).buffer))[0];
 
+// delete emscripten window.Module
+delete window["Module"];
+
 window["oggVorbisToWave"] = function(oggBuffer) {
 
 	var ovFile, size, wavpc, ret;
