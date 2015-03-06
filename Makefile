@@ -1,5 +1,5 @@
 OGG:=libogg-1.3.2
-VORBIS:=libvorbis-1.3.4
+VORBIS:=libvorbis-1.3.5
 
 OGG_URL:="http://downloads.xiph.org/releases/ogg/$(OGG).tar.gz"
 VORBIS_URL:="http://downloads.xiph.org/releases/vorbis/$(VORBIS).tar.gz"
