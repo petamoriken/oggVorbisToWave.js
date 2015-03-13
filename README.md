@@ -1,9 +1,18 @@
 OggVorbis To Wave
 ==================
 
-Add `window.oggVorbisToWave`.
+##What is this?
 
-Enable to play OggVorbis in Frontend-JavaScript by Web Audio API's `decodeAudioData` in Safari and IE10~ (use [WAAPISim]).
+Web Audio API を使って Safari や IE10~11 でも OggVorbis から `AudioBuffer` を作ることができます。ただし IE10~11 では Web Audio API 自体サポートされていませんので、[WAAPISim] を使うことになります。
+
+このライブラリは `window.oggVorbisToWave` を使うことで OggVorbis の `ArrayBuffer` を Wave の `ArrayBuffer` に変換することが可能です。
+
+このライブラリは [Emscripten] を使用しています。[Emscripten] の仕様上、グローバルに `window.Module` を作ることになるので、仮に `window.Module` をライブラリの読み込み前に定義してあった場合、上書き削除することとなります。
+
+Enable to play OggVorbis in Frontend-JavaScript by making Web Audio API's `AudioBuffer` in Safari and IE10~11 (use [WAAPISim]).
+
+##How to use
+
 
 	var ctx = null;
 	if(typeof webkitAudioContext !== "undefined") {
@@ -47,4 +56,5 @@ this software includes the work that is distributed in the [Apache License 2.0](
 by Bjorn Melinder bjorn@soundtrap.com
 
 [WAAPISim]:https://github.com/g200kg/WAAPISim
+[Emscripten]:https://github.com/kripken/emscripten
 [libvorbis.js]:https://github.com/bjornm/libvorbis-js
