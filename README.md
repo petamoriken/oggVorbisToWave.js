@@ -9,7 +9,7 @@ Web Audio API を使って Safari や IE10~11 でも OggVorbis から `AudioBuff
 
 このライブラリは `window.oggVorbisToWave` を使うことで OggVorbis の `ArrayBuffer` を Wave の `ArrayBuffer` に変換することが可能です。
 
-このライブラリは [Emscripten] を使用しています。[Emscripten] の仕様上、グローバルに `window.Module` を作ることになるので、仮に `window.Module` をライブラリの読み込み前に定義してあった場合、上書き削除することとなります。
+このライブラリは [Emscripten] を使用しています。
 
 
 ##How to use
