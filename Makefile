@@ -13,11 +13,11 @@ EMCC_LINKS:=-I libogg/install/include -Llibogg/install/lib -logg -I libvorbis/bu
 EMCC_SRCS:=src/vorbis.c libvorbis/lib/vorbisfile.c libvorbis/lib/.libs/libvorbis.a
 
 
-all: oggvorbis.js
+all: oggVorbisToWave.js
 
-oggvorbis.js: libogg libvorbis src/pre.js src/post.js src/head.js src/vorbis.c
+oggVorbisToWave.js: libogg libvorbis src/pre.js src/post.js src/head.js src/vorbis.c
 	emcc $(EMCC_OPTS) $(EMCC_LINKS) $(EMCC_SRCS) -o build.js && \
-	cat src/head.js build.js > oggvorbis.js && \
+	cat src/head.js build.js > oggVorbisToWave.js && \
 	$(RM) -rf build.js
 	
 libogg: $(OGG).tar.gz
