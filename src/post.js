@@ -18,12 +18,13 @@ if(ENVIRONMENT_IS_REQUIRE) {
 
 } else if(ENVIRONMENT_IS_WEB) {
 
-	delete window["Module"];
 	window["oggVorbisToWave"] = oggVorbisToWave;
 
 	// reset window.Module
 	if(_Module) {
 		window["Module"] = _Module;
+	} else {
+		delete window["Module"];	
 	}
 
 }
