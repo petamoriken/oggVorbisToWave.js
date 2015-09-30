@@ -10,30 +10,18 @@ var Vorbis = {
 var buffer = Module["buffer"], heapu32 = Module["HEAPU32"], isLittleEndian = !!(new Uint8Array((new Uint16Array([0x00ff])).buffer))[0];
 var ENVIRONMENT_IS_REQUIRE = (typeof module !== "undefined" && module["exports"]);
 
-
 // export
 if(ENVIRONMENT_IS_REQUIRE) {
-
 	module["exports"] = oggVorbisToWave;
-
 } else if(ENVIRONMENT_IS_WEB) {
-
 	window["oggVorbisToWave"] = oggVorbisToWave;
-
-	// reset window.Module
-	if(_Module) {
-		window["Module"] = _Module;
-	} else {
-		delete window["Module"];	
-	}
-
 }
 
 function oggVorbisToWave(oggBuffer) {
 
 	var ovFile, size, wavpc, ret;
 
-	FS.createDataFile("/", "data.ogg", new Uint8Array(oggBuffer), 1, undef);
+	FS.createDataFile("/", "data.ogg", new Uint8Array(oggBuffer), 1, undefined);
 
 	ovFile = Vorbis.sp_ov_start();
 	wavpc = Vorbis.sp_ov_to_wave(ovFile);
@@ -48,6 +36,6 @@ function oggVorbisToWave(oggBuffer) {
 	return ret;
 }
 
-})(this);
+})();
 
 
