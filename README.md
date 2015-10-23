@@ -3,14 +3,15 @@ OggVorbis To Wave
 
 ##What this is
 
+This library makes OggVorbis `ArrayBuffer` -> Wave `ArrayBuffer`.  
 Enable to play OggVorbis in Frontend-JavaScript by making Web Audio API's `AudioBuffer` in Safari and IE10~11 (use [WAAPISim]).
 
-Web Audio API を使って Safari や IE10~11 でも OggVorbis から `AudioBuffer` を作ることができます。ただし IE10~11 では Web Audio API 自体サポートされていませんので、[WAAPISim] を使うことになります。
+このライブラリは OggVorbis の `ArrayBuffer` を Wave の `ArrayBuffer` に変換することが出来ます。  
+すなわち Web Audio API を使って Safari や IE10~11 でも OggVorbis から `AudioBuffer` を作ることができるようになります。ただし IE10~11 では Web Audio API 自体サポートされていませんので、[WAAPISim] を使うことになります。
 
-このライブラリはブラウザの script タグから読み込んだ場合は `window.oggVorbisToWave` を、[Browserify] などの CommonJS においては `require("./oggVorbisToWave")` で使用できます。  
-使用することで OggVorbis の `ArrayBuffer` を Wave の `ArrayBuffer` に変換することが可能です。
+ブラウザの script タグから読み込んだ場合は `window.oggVorbisToWave` を、[Browserify] などの CommonJS においては `require("./oggVorbisToWave")` で使用できます。
 
-このライブラリは [Emscripten] を使用しています。
+このライブラリは [Emscripten] を利用して作られています。
 
 
 ##How to use
@@ -20,7 +21,7 @@ Web Audio API を使って Safari や IE10~11 でも OggVorbis から `AudioBuff
 		ctx = new (window.AudioContext || window.webkitAudioContext)();
 	} catch(e) {
 		ctx = null;
-		console.log("Can't use Web Audio API");
+		console.log("This Browser can't use Web Audio API");
 	}
 
 	if(ctx !== null) {

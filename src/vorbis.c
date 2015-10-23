@@ -46,7 +46,7 @@ void sp_ov_end(OggVorbis_File *s) {
     free(s);
 }
 
-unsigned char *sp_ov_to_wave(OggVorbis_File *s) {
+unsigned char *sp_ov_to_wave(OggVorbis_File *s, _Bool isLittleEndian) {
     vorbis_info *vi;
     WAVHEADER wh;
     DWORD bytes;
@@ -57,8 +57,6 @@ unsigned char *sp_ov_to_wave(OggVorbis_File *s) {
 
     unsigned char *ret;
     int pc = 0;
-
-    int check = 1;
 
     ov_fopen("data.ogg", s);
 
@@ -82,7 +80,7 @@ unsigned char *sp_ov_to_wave(OggVorbis_File *s) {
     wh.pcmbytes = bytes;
 
     // ビッグエンディアンならリトルエンディアンに変換する
-    if( !(*(char*)&check) ) {
+    if( !isLittleEndian ) {
         convertEndian(&(wh.bytes), sizeof(wh.bytes));
         convertEndian(&(wh.siz_wf), sizeof(wh.siz_wf));
         convertEndian(&(wh.wFormatTag), sizeof(wh.wFormatTag));

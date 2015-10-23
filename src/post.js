@@ -3,7 +3,7 @@ var Vorbis = {
 
 	sp_ov_start:	Module["cwrap"]('sp_ov_start', 'number', []),
 	sp_ov_end:		Module["cwrap"]('sp_ov_end', 'void', ['number']),
-	sp_ov_to_wave:	Module["cwrap"]('sp_ov_to_wave', 'number', ['number'])
+	sp_ov_to_wave:	Module["cwrap"]('sp_ov_to_wave', 'number', ['number', "number"])
 
 };
 
@@ -24,7 +24,7 @@ function oggVorbisToWave(oggBuffer) {
 	FS.createDataFile("/", "data.ogg", new Uint8Array(oggBuffer), 1);
 
 	ovFile = Vorbis.sp_ov_start();
-	wavpc = Vorbis.sp_ov_to_wave(ovFile);
+	wavpc = Vorbis.sp_ov_to_wave(ovFile, isLittleEndian);
 
 	FS.unlink("data.ogg");
 
