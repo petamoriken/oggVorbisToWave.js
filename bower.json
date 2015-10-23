@@ -1,0 +1,23 @@
+{
+  "name": "OggVorbisToWave",
+  "description": "OggVorbis to Wave in Frontend-JavaScript using Emscripten",
+  "main": "oggVorbisToWave.js",
+  "authors": [
+    "petamoriken"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "ogg",
+    "vorbis",
+    "webaudio"
+  ],
+  "homepage": "https://github.com/petamoriken/OggVorbisToWave.js",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
