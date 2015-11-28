@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
@@ -39,12 +40,12 @@ typedef struct {
 
 
 // http://torasukenote.blog120.fc2.com/blog-entry-106.html
-int convertEndian(void *input, size_t s) {
+bool convertEndian(void *input, size_t s) {
     int i;
     char *temp;
 
     if((temp = (char *) malloc( s * sizeof(char) )) == NULL) {
-        return 0;
+        return false;
     }
 
     for(i=0; i<s; i++){
@@ -57,7 +58,7 @@ int convertEndian(void *input, size_t s) {
 
     free(temp);
 
-    return 1;
+    return true;
 }
 
 // http://www.geocities.jp/debu0510/personal/oggvorbis.html#8
@@ -115,13 +116,12 @@ long mtell(void *mem) {
 int mclose(void *mem) {
     OVMEM *pom = (OVMEM *) mem;
     if (pom == NULL) return -1;
-    free(pom->buf);
     free(pom);
     return 0;
 }
 
 
-unsigned char *sp_ov_to_wave(char *buffer, size_t buffer_size, _Bool isLittleEndian) {
+unsigned char *sp_ov_to_wave(char *buffer, size_t buffer_size, bool isLittleEndian) {
     OggVorbis_File s;
 
     ov_callbacks oc;
@@ -145,11 +145,15 @@ unsigned char *sp_ov_to_wave(char *buffer, size_t buffer_size, _Bool isLittleEnd
     oc.tell_func = mtell;
 
     // crete Ogg Vorbis Memory
-    pom = malloc(sizeof(OVMEM));
+    pom = (OVMEM *) malloc(sizeof(OVMEM));
+
+    if(pom == NULL) {
+        goto fail;
+    } 
+
     pom->pos = 0;
     pom->siz = buffer_size;
-    pom->buf = malloc(buffer_size);
-    memcpy(pom->buf, buffer, buffer_size);
+    pom->buf = buffer;
 
     ov_open_callbacks(pom, &s, NULL, 0, oc);
     vi = ov_info(&s, -1);
@@ -172,21 +176,21 @@ unsigned char *sp_ov_to_wave(char *buffer, size_t buffer_size, _Bool isLittleEnd
 
     // big endianess -> little endianess
     if( !isLittleEndian ) {
-        convertEndian(&(wh.bytes), sizeof(wh.bytes));
-        convertEndian(&(wh.siz_wf), sizeof(wh.siz_wf));
-        convertEndian(&(wh.wFormatTag), sizeof(wh.wFormatTag));
-        convertEndian(&(wh.nChannels), sizeof(wh.nChannels));
-        convertEndian(&(wh.nSamplesPerSec), sizeof(wh.nSamplesPerSec));
-        convertEndian(&(wh.wBitsPerSample), sizeof(wh.wBitsPerSample));
-        convertEndian(&(wh.nBlockAlign), sizeof(wh.nBlockAlign));
-        convertEndian(&(wh.nAvgBytesPerSec), sizeof(wh.nAvgBytesPerSec));
-        convertEndian(&(wh.pcmbytes), sizeof(wh.pcmbytes));
+        if(!convertEndian(&(wh.bytes), sizeof(wh.bytes)))                        goto fail;
+        if(!convertEndian(&(wh.siz_wf), sizeof(wh.siz_wf)))                      goto fail;
+        if(!convertEndian(&(wh.wFormatTag), sizeof(wh.wFormatTag)))              goto fail;
+        if(!convertEndian(&(wh.nChannels), sizeof(wh.nChannels)))                goto fail;
+        if(!convertEndian(&(wh.nSamplesPerSec), sizeof(wh.nSamplesPerSec)))      goto fail;
+        if(!convertEndian(&(wh.wBitsPerSample), sizeof(wh.wBitsPerSample)))      goto fail;
+        if(!convertEndian(&(wh.nBlockAlign), sizeof(wh.nBlockAlign)))            goto fail;
+        if(!convertEndian(&(wh.nAvgBytesPerSec), sizeof(wh.nAvgBytesPerSec)))    goto fail;
+        if(!convertEndian(&(wh.pcmbytes), sizeof(wh.pcmbytes)))                  goto fail;
     }
 
     ret = (unsigned char *) malloc(bytes + sizeof(WAVHEADER));
 
     if(ret == NULL) {
-        return NULL;
+        goto fail;
     }
 
     memcpy(ret, &wh, sizeof(WAVHEADER));
@@ -203,6 +207,10 @@ unsigned char *sp_ov_to_wave(char *buffer, size_t buffer_size, _Bool isLittleEnd
     ov_clear(&s);
 
     return ret;
+
+fail:
+    return NULL;
+
 }
 
 void sp_free_wave(unsigned char *s) {
