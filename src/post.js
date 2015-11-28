@@ -1,33 +1,34 @@
-// libogg and libvorbis function wrappers
 var Vorbis = {
 
-	sp_ov_start:	Module["cwrap"]('sp_ov_start', 'number', []),
-	sp_ov_end:		Module["cwrap"]('sp_ov_end', 'void', ['number']),
-	sp_ov_to_wave:	Module["cwrap"]('sp_ov_to_wave', 'number', ['number', "number"])
+	sp_ov_to_wave:	cwrap('sp_ov_to_wave', 'number', ['number', "number", "number"]),
+	sp_free_wave:	cwrap('sp_free_wave', 'void', ['number'])
 
 };
 
-var buffer = Module["buffer"], heapu32 = Module["HEAPU32"], dataview = new DataView(buffer), isLittleEndian = (new Uint8Array((new Uint16Array([1])).buffer))[0];
+var dataview = new DataView(buffer), isLittleEndian = (new Uint8Array((new Uint16Array([1])).buffer))[0];
 var ENVIRONMENT_IS_REQUIRE = (typeof module !== "undefined" && module["exports"]);
 
 function oggVorbisToWave(oggBuffer) {
 
-	var ovFile, size, wavpc, ret;
+	var oggpc, oggsize, wavpc, wavsize, ret;
 
-	FS.createDataFile("/", "data.ogg", new Uint8Array(oggBuffer), 1);
+	// set Ogg Buffer to memory
+	oggsize = oggBuffer.byteLength;
+	oggpc = _malloc(oggsize);
+	writeArrayToMemory(new Uint8Array(oggBuffer), oggpc);
 
-	ovFile = Vorbis.sp_ov_start();
-	wavpc = Vorbis.sp_ov_to_wave(ovFile, isLittleEndian);
+	// Ogg Buffer -> Wave Buffer
+	wavpc = Vorbis.sp_ov_to_wave(oggpc, oggsize, isLittleEndian);
 
-	FS.unlink("data.ogg");
+	_free(oggpc);
 
-	size = ( (isLittleEndian && wavpc % 4 === 0) ? heapu32[wavpc / 4 + 1] : dataview.getUint32(wavpc + 4, true) ) + 8;
-	ret = buffer.slice(wavpc, wavpc + size);
+	wavsize = ( (isLittleEndian && wavpc % 4 === 0) ? HEAPU32[wavpc / 4 + 1] : dataview.getUint32(wavpc + 4, true) ) + 8;
+	ret = buffer.slice(wavpc, wavpc + wavsize);
 
-	Vorbis.sp_ov_end(ovFile);
+	Vorbis.sp_free_wave(wavpc);
 
 	return ret;
-	
+
 }
 
 // export
