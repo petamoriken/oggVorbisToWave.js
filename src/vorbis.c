@@ -213,6 +213,8 @@ fail:
 
 }
 
+/*
 void sp_free_wave(unsigned char *s) {
     free(s);
 }
+*/

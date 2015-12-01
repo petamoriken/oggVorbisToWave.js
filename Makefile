@@ -4,7 +4,7 @@ VORBIS:=libvorbis-1.3.5
 OGG_URL:="http://downloads.xiph.org/releases/ogg/$(OGG).tar.gz"
 VORBIS_URL:="http://downloads.xiph.org/releases/vorbis/$(VORBIS).tar.gz"
 
-EMCC_OPTS:=-s EXPORTED_FUNCTIONS="['_sp_ov_to_wave', '_sp_free_wave']"
+EMCC_OPTS:=-s EXPORTED_FUNCTIONS="['_sp_ov_to_wave']"
 EMCC_OPTS+=-s EXPORTED_RUNTIME_METHODS="[]"
 EMCC_OPTS+=-s NO_BROWSER=1 -s NO_FILESYSTEM=1
 EMCC_OPTS+=-Oz --memory-init-file 0 --closure 1 --llvm-lto 1
